@@ -1,0 +1,15 @@
+#!/bin/sh
+# Menu de energia: bloquear, suspender, sair do dwm, reiniciar, desligar.
+# As opções que encerram a sessão pedem confirmação.
+menu() { dmenu -c -i -l "$1" -bw 2 -p "$2"; }
+confirm() { [ "$(printf 'Não\nSim\n' | menu 2 "$1?")" = "Sim" ]; }
+
+choice=$(printf 'Bloquear\nSuspender\nSair do dwm\nReiniciar\nDesligar\n' | menu 5 "Energia:") || exit
+
+case "$choice" in
+	Bloquear)      slock ;;
+	Suspender)     slock systemctl suspend ;;
+	"Sair do dwm") confirm "Sair do dwm" && pkill -x dwm ;;
+	Reiniciar)     confirm "Reiniciar" && systemctl reboot ;;
+	Desligar)      confirm "Desligar" && systemctl poweroff ;;
+esac

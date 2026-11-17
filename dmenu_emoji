@@ -1,0 +1,11 @@
+#!/bin/sh
+# Escolhe um emoji ou símbolo e copia para a área de transferência.
+# Lista: emoji.txt (Unicode emoji-test.txt + símbolos), instalada em $PREFIX/share/dmenu.
+list="${DMENU_EMOJI_LIST:-/usr/local/share/dmenu/emoji.txt}"
+[ -f "$list" ] || list="$(dirname "$0")/emoji.txt"
+
+sel=$(dmenu -c -i -l 15 -bw 2 -p "Emoji:" < "$list") || exit
+char=${sel%% *}
+
+printf '%s' "$char" | xclip -selection clipboard
+notify-send "Copiado: $char" "${sel#* }" 2>/dev/null

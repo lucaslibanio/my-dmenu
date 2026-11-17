@@ -36,7 +36,12 @@ dist: clean
 
 install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
-	cp -f dmenu dmenu_path dmenu_run stest $(DESTDIR)$(PREFIX)/bin
+	cp -f dmenu dmenu_path dmenu_run dmenu_power dmenu_emoji stest $(DESTDIR)$(PREFIX)/bin
+	chmod 755 $(DESTDIR)$(PREFIX)/bin/dmenu_power
+	chmod 755 $(DESTDIR)$(PREFIX)/bin/dmenu_emoji
+	mkdir -p $(DESTDIR)$(PREFIX)/share/dmenu
+	cp -f emoji.txt $(DESTDIR)$(PREFIX)/share/dmenu/emoji.txt
+	chmod 644 $(DESTDIR)$(PREFIX)/share/dmenu/emoji.txt
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/dmenu
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/dmenu_path
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/dmenu_run
@@ -51,6 +56,9 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/dmenu\
 		$(DESTDIR)$(PREFIX)/bin/dmenu_path\
 		$(DESTDIR)$(PREFIX)/bin/dmenu_run\
+		$(DESTDIR)$(PREFIX)/bin/dmenu_power\
+		$(DESTDIR)$(PREFIX)/bin/dmenu_emoji\
+		$(DESTDIR)$(PREFIX)/share/dmenu/emoji.txt\
 		$(DESTDIR)$(PREFIX)/bin/stest\
 		$(DESTDIR)$(MANPREFIX)/man1/dmenu.1\
 		$(DESTDIR)$(MANPREFIX)/man1/stest.1

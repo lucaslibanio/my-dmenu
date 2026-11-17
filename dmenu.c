@@ -302,7 +302,10 @@ compare_distance(const void *a, const void *b)
 	if (!da)
 		return -1;
 
-	return da->distance == db->distance ? 0 : da->distance < db->distance ? -1 : 1;
+	/* empate: mantém a ordem da entrada (ex.: histórico do dmenu_run) */
+	if (da->distance == db->distance)
+		return (da > db) - (da < db);
+	return da->distance < db->distance ? -1 : 1;
 }
 
 void

@@ -1,2 +1,17 @@
 #!/bin/sh
-dmenu_path | dmenu "$@" | ${SHELL:-"/bin/sh"} &
+# dmenu_run com histórico: os programas mais usados aparecem primeiro.
+# O histórico fica em ~/.cache/dmenu_run_history (contagem<TAB>comando).
+hist="${XDG_CACHE_HOME:-$HOME/.cache}/dmenu_run_history"
+tab=$(printf '\t')
+mkdir -p "$(dirname "$hist")" && touch "$hist"
+
+cmd=$( { sort -t "$tab" -k1,1nr "$hist" | cut -f2-; dmenu_path; } \
+	| awk '!seen[$0]++' | dmenu "$@" ) || exit
+[ -n "$cmd" ] || exit
+
+awk -F "$tab" -v OFS="$tab" -v c="$cmd" '
+	$2 == c { $1++; found = 1 }
+	{ print }
+	END { if (!found) print 1, c }' "$hist" > "$hist.tmp" && mv "$hist.tmp" "$hist"
+
+printf '%s\n' "$cmd" | ${SHELL:-"/bin/sh"} &
