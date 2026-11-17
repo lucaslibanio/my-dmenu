@@ -8,7 +8,10 @@ choice=$(printf 'Bloquear\nSuspender\nSair do dwm\nReiniciar\nDesligar\n' | menu
 
 case "$choice" in
 	Bloquear)      slock ;;
-	Suspender)     slock & sleep 1; systemctl suspend ;;
+	Suspender)
+		# com o xss-lock rodando (.xinitrc), ele mesmo bloqueia ao suspender
+		pgrep -x xss-lock >/dev/null || { slock & sleep 1; }
+		systemctl suspend ;;
 	"Sair do dwm") confirm "Sair do dwm" && pkill -x dwm ;;
 	Reiniciar)     confirm "Reiniciar" && systemctl reboot ;;
 	Desligar)      confirm "Desligar" && systemctl poweroff ;;
