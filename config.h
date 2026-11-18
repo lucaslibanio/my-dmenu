@@ -8,7 +8,7 @@ static int min_width = 500;                 /* minimum width when centered */
 static const float menu_height_ratio = 4.0f;/* centered: distance from top = (screen - menu) / ratio */
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
-	"Ubuntu Mono:style=Italic:size=16",
+	"FiraCode Nerd Font Mono:size=12",
 	"Symbols Nerd Font:size=14",
 	"Noto Color Emoji:size=14",
 };
